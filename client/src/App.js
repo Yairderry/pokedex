@@ -118,6 +118,8 @@ function App() {
 
   function searchPokemon() {
     const name = state.input.toLowerCase();
+    if (name === "") return;
+
     axios
       .get(`/api/pokemon/${name}`)
       .then((data) => {

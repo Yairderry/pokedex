@@ -35,7 +35,7 @@ export default class Display extends Component {
             (e.currentTarget.src = this.props.pokemon.img.front_default)
           }
         />
-        {this.props.pokemon.caught ? (
+        {!this.props.pokemon.name ? null : this.props.pokemon.caught ? (
           <button onClick={this.props.toggleCatchRelease}>Release</button>
         ) : (
           <button onClick={this.props.toggleCatchRelease}>Catch</button>
