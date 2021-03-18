@@ -1,19 +1,29 @@
 import React, { Component } from "react";
+import Pokemon from "./Pokemon";
 import PokemonProperty from "./PokemonProperty";
 
 export default class Display extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div>
-        <ul>
-          <PokemonProperty />
-          <PokemonProperty />
-          <PokemonProperty />
-          <PokemonProperty />
-        </ul>
+        <ul>{printProperties(this.props.pokemon)}</ul>
         <img />
-        <button>Catch/Release</button>
+        {this.props.caught ? <button>Release</button> : <button>Catch</button>}
       </div>
     );
   }
+}
+
+function printProperties(pokemon) {
+  const PropertiesList = [];
+  for (let prop in pokemon) {
+    PropertiesList.push(
+      <PokemonProperty key={prop} prop={prop} value={pokemon[prop]} />
+    );
+  }
+  return PropertiesList;
 }
