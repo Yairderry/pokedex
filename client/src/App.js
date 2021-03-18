@@ -18,7 +18,7 @@ function App() {
       caught: false,
       img: "",
     },
-    info: [],
+    info: { next: null, prev: null, results: [] },
   });
 
   function search(e) {
@@ -42,7 +42,7 @@ function App() {
             name: state.pokemon.name,
           });
 
-      const info = data.data.userCollection;
+      const info = data.data;
       state.pokemon.caught = !state.pokemon.caught;
 
       if (JSON.stringify(state.info) === JSON.stringify(collection)) {
@@ -75,7 +75,7 @@ function App() {
     axios
       .get(`/api/collection`)
       .then((data) => {
-        const info = data.data.userCollection;
+        const info = data.data;
         setState({
           error: false,
           input: state.input,

@@ -6,8 +6,8 @@ const type = Router();
 type.get("/:type", (req, res) => {
   getPokemon(req.originalUrl)
     .then((data) => {
-      const pokemons = data.pokemon.map((pokemon) => pokemon.pokemon.name);
-      res.json(pokemons);
+      const results = data.pokemon.map((pokemon) => pokemon.pokemon.name);
+      res.json({ next: null, prev: null, results });
     })
     .catch((err) => {
       console.log(err);
