@@ -27,7 +27,10 @@ pokemon.get("/:name", async (req, res) => {
       front_default: sprites.front_default,
     };
 
-    const { data } = await axios.get("http://localhost:3001/api/collection");
+    const origin = `${req.protocol}://${req.hostname}:${
+      process.env.PORT || 3001
+    }`;
+    const { data } = await axios.get(`${origin}/api/collection`);
     const caught = data.userCollection.includes(name);
 
     const pokemon = { name, height, weight, types: newTypes, img, caught };
