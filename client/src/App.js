@@ -4,6 +4,8 @@ import SearchArea from "./components/SearchArea";
 import Info from "./components/Info";
 import { useState } from "react";
 
+const axios = require("axios").default;
+
 function App() {
   const [state, setState] = useState({
     input: "",
@@ -12,9 +14,9 @@ function App() {
       Height: "",
       Weight: "",
       Types: [],
+      caught: false,
+      img: "",
     },
-    caught: false,
-    img: "",
     info: [],
   });
 
@@ -22,36 +24,34 @@ function App() {
     setState({
       input: state.input,
       pokemon: state.pokemon,
-      caught: !state.caught,
-      img: state.img,
       info: state.info,
     });
   }
 
   function showCollection() {
-    const info = ["My 1st Pokemon", "My 2nd Pokemon", "My 3rd Pokemon"];
-    setState({
-      input: state.input,
-      pokemon: state.pokemon,
-      caught: state.caught,
-      img: state.img,
-      info,
-    });
+    axios
+      .get(`/api/collection`)
+      .then((data) => {
+        const info = data.data.userCollection;
+        setState({
+          input: state.input,
+          pokemon: state.pokemon,
+          info,
+        });
+      })
+      .catch((err) => console.log(err));
   }
 
   function searchPokemon() {
     const pokemon = {
-      Name: "Moran",
-      Height: "123",
-      Weight: "321",
-      Types: ["one", "two"],
+      Name: "yair",
+      Height: "1234",
+      Weight: "12341234",
+      Types: ["asdf", "qwer", "zxcv"],
     };
-
     setState({
       input: state.input,
       pokemon,
-      caught: state.caught,
-      img: state.img,
       info: state.info,
     });
   }
@@ -63,11 +63,7 @@ function App() {
         showCollection={showCollection}
         searchPokemon={searchPokemon}
       />
-      <Display
-        caught={state.caught}
-        pokemon={state.pokemon}
-        toggleCatchRelease={toggleCatchRelease}
-      />
+      <Display caught={state.caught} pokemon={state.pokemon} />
       {state.info.length !== 0 && (
         <Info info={state.info} searchPokemon={searchPokemon} />
       )}

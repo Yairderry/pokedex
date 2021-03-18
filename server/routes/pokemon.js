@@ -1,3 +1,4 @@
+const { default: axios } = require("axios");
 const { Router } = require("express");
 const express = require("express");
 const getPokemon = require("../utils/pokeAPI");
@@ -11,19 +12,25 @@ pokemon.get("/", (req, res) => {
     .then((data) => {
       const pokemons = data.results.map((aPokemon) => aPokemon.name);
       res.json(pokemons);
-      // res.json(data);
     })
     .catch((err) => res.json({ err: err.message }));
 });
 
-pokemon.get("/:name", (req, res) => {
-  getPokemon(req.originalUrl)
-    .then(({ name, height, weight, types }) => {
-      const newTypes = types.map((type) => type.type.name);
-      const pokemon = { name, height, weight, types: newTypes };
-      res.json(pokemon);
-    })
-    .catch((err) => res.json({ err: err.message }));
+pokemon.get("/:name", async (req, res) => {
+  const { name, height, weight, types, sprites } = await getPokemon(
+    req.originalUrl
+  );
+  const newTypes = types.map((type) => type.type.name);
+  const img = {
+    back_default: sprites.back_default,
+    front_default: sprites.front_default,
+  };
+
+  const { data } = await axios.get("http://localhost:3001/api/collection");
+  const caught = data.userCollection.includes(name);
+
+  const pokemon = { name, height, weight, types: newTypes, img, caught };
+  res.json(pokemon);
 });
 
 pokemon.get("/:id", (req, res) => {

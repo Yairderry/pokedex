@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Pokemon from "./Pokemon";
 import PokemonProperty from "./PokemonProperty";
 
 export default class Display extends Component {
@@ -11,11 +10,11 @@ export default class Display extends Component {
     return (
       <div>
         <ul>{printProperties(this.props.pokemon)}</ul>
-        <img />
-        {this.props.caught ? (
-          <button onClick={this.props.toggleCatchRelease}>Release</button>
+        <img src={this.props.pokemon.img} />
+        {this.props.pokemon.caught ? (
+          <button>Release</button>
         ) : (
-          <button onClick={this.props.toggleCatchRelease}>Catch</button>
+          <button>Catch</button>
         )}
       </div>
     );
@@ -25,6 +24,7 @@ export default class Display extends Component {
 function printProperties(pokemon) {
   const PropertiesList = [];
   for (let prop in pokemon) {
+    if (prop === "caught" || prop === "img") continue;
     PropertiesList.push(
       <PokemonProperty key={prop} prop={prop} value={pokemon[prop]} />
     );
