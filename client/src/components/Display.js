@@ -44,19 +44,3 @@ export default class Display extends Component {
     );
   }
 }
-
-// function printProperties(pokemon) {
-//   const PropertiesList = [];
-//   for (let prop in pokemon) {
-//     if (prop === "caught" || prop === "img") continue;
-//     PropertiesList.push(
-//       <PokemonProperty
-//         key={prop}
-//         prop={prop}
-//         value={pokemon[prop]}
-//         getTypesList={this.props.getTypesList}
-//       />
-//     );
-//   }
-//   return PropertiesList;
-// }

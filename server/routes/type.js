@@ -14,7 +14,10 @@ type.get("/:type", (req, res) => {
       console.log(pokemons);
       res.json(pokemons);
     })
-    .catch((err) => res.json({ err: err.message }));
+    .catch((err) => {
+      console.log(err);
+      res.status(404).json({ error: "This pokemon is not in your collection" });
+    });
 });
 
 module.exports = type;

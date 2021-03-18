@@ -8,6 +8,7 @@ const axios = require("axios").default;
 
 function App() {
   const [state, setState] = useState({
+    error: false,
     input: "",
     pokemon: {
       Name: "",
@@ -23,6 +24,7 @@ function App() {
   function search(e) {
     const input = e.target.value;
     setState({
+      error: false,
       input,
       pokemon: state.pokemon,
       info: state.info,
@@ -30,30 +32,43 @@ function App() {
   }
 
   async function toggleCatchRelease() {
-    const collection = await (await axios.get(`/api/collection`)).data
-      .userCollection;
+    try {
+      const collection = (await axios.get(`/api/collection`)).data
+        .userCollection;
 
-    const data = state.pokemon.caught
-      ? await axios.delete(`/api/collection/release/${state.pokemon.name}`)
-      : await axios.post(`/api/collection/catch`, { name: state.pokemon.name });
+      const data = state.pokemon.caught
+        ? await axios.delete(`/api/collection/release/${state.pokemon.name}`)
+        : await axios.post(`/api/collection/catch`, {
+            name: state.pokemon.name,
+          });
 
-    const info = data.data.userCollection;
-    state.pokemon.caught = !state.pokemon.caught;
+      const info = data.data.userCollection;
+      state.pokemon.caught = !state.pokemon.caught;
 
-    if (JSON.stringify(state.info) === JSON.stringify(collection)) {
+      if (JSON.stringify(state.info) === JSON.stringify(collection)) {
+        setState({
+          error: false,
+          input: state.input,
+          pokemon: state.pokemon,
+          info,
+        });
+        return;
+      }
+
       setState({
+        error: false,
         input: state.input,
         pokemon: state.pokemon,
-        info,
+        info: state.info,
       });
-      return;
+    } catch {
+      setState({
+        error: true,
+        input: state.input,
+        pokemon: state.pokemon,
+        info: state.info,
+      });
     }
-
-    setState({
-      input: state.input,
-      pokemon: state.pokemon,
-      info: state.info,
-    });
   }
 
   function showCollection() {
@@ -62,12 +77,20 @@ function App() {
       .then((data) => {
         const info = data.data.userCollection;
         setState({
+          error: false,
           input: state.input,
           pokemon: state.pokemon,
           info,
         });
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        setState({
+          error: true,
+          input: state.input,
+          pokemon: state.pokemon,
+          info: state.info,
+        });
+      });
   }
 
   function getTypesList(e) {
@@ -77,24 +100,43 @@ function App() {
       .then((data) => {
         const info = data.data;
         setState({
+          error: false,
           input: state.input,
           pokemon: state.pokemon,
           info,
         });
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        setState({
+          error: true,
+          input: state.input,
+          pokemon: state.pokemon,
+          info: state.info,
+        });
+      });
   }
 
   function searchPokemon() {
-    const name = state.input;
-    axios.get(`/api/pokemon/${name}`).then((data) => {
-      const pokemon = data.data;
-      setState({
-        input: state.input,
-        pokemon,
-        info: state.info,
+    const name = state.input.toLowerCase();
+    axios
+      .get(`/api/pokemon/${name}`)
+      .then((data) => {
+        const pokemon = data.data;
+        setState({
+          error: false,
+          input: state.input,
+          pokemon,
+          info: state.info,
+        });
+      })
+      .catch(() => {
+        setState({
+          error: true,
+          input: state.input,
+          pokemon: state.pokemon,
+          info: state.info,
+        });
       });
-    });
   }
 
   function showPokemon(e) {
@@ -102,6 +144,7 @@ function App() {
     axios.get(`/api/pokemon/${name}`).then((data) => {
       const pokemon = data.data;
       setState({
+        error: false,
         input: state.input,
         pokemon,
         info: state.info,
@@ -118,6 +161,11 @@ function App() {
         showCollection={showCollection}
         searchPokemon={searchPokemon}
       />
+      {state.error && (
+        <div>
+          <img src="./sad_pikachu.gif" />
+        </div>
+      )}
       <Display
         toggleCatchRelease={toggleCatchRelease}
         caught={state.caught}
