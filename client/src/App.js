@@ -29,36 +29,31 @@ function App() {
     });
   }
 
-  function releasePokemon() {
-    axios
-      .delete(`/api/collection/release/${state.pokemon.name}`)
-      .then((data) => {
-        const info = data.data.userCollection;
-        state.pokemon.caught = !state.pokemon.caught;
+  async function toggleCatchRelease() {
+    const collection = await (await axios.get(`/api/collection`)).data
+      .userCollection;
 
-        setState({
-          input: state.input,
-          pokemon: state.pokemon,
-          info,
-        });
-      })
-      .catch((err) => console.log(err));
-  }
+    const data = state.pokemon.caught
+      ? await axios.delete(`/api/collection/release/${state.pokemon.name}`)
+      : await axios.post(`/api/collection/catch`, { name: state.pokemon.name });
 
-  function catchPokemon() {
-    axios
-      .post(`/api/collection/catch`, { name: state.pokemon.name })
-      .then((data) => {
-        const info = data.data.userCollection;
-        state.pokemon.caught = !state.pokemon.caught;
+    const info = data.data.userCollection;
+    state.pokemon.caught = !state.pokemon.caught;
 
-        setState({
-          input: state.input,
-          pokemon: state.pokemon,
-          info,
-        });
-      })
-      .catch((err) => console.log(err));
+    if (JSON.stringify(state.info) === JSON.stringify(collection)) {
+      setState({
+        input: state.input,
+        pokemon: state.pokemon,
+        info,
+      });
+      return;
+    }
+
+    setState({
+      input: state.input,
+      pokemon: state.pokemon,
+      info: state.info,
+    });
   }
 
   function showCollection() {
@@ -124,9 +119,8 @@ function App() {
         searchPokemon={searchPokemon}
       />
       <Display
-        catch={catchPokemon}
+        toggleCatchRelease={toggleCatchRelease}
         caught={state.caught}
-        release={releasePokemon}
         pokemon={state.pokemon}
         getTypesList={getTypesList}
       />

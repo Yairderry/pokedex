@@ -36,9 +36,9 @@ export default class Display extends Component {
           }
         />
         {this.props.pokemon.caught ? (
-          <button onClick={this.props.release}>Release</button>
+          <button onClick={this.props.toggleCatchRelease}>Release</button>
         ) : (
-          <button onClick={this.props.catch}>Catch</button>
+          <button onClick={this.props.toggleCatchRelease}>Catch</button>
         )}
       </div>
     );
