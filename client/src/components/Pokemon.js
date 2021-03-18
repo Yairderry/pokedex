@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PokemonProperty from "./PokemonProperty";
 
 class Pokemon extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ class Pokemon extends Component {
   render() {
     return (
       <li>
-        <p>{this.props.pokemon}</p>
+        <p onClick={this.props.searchPokemon}>{this.props.pokemon}</p>
       </li>
     );
   }

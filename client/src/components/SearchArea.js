@@ -5,8 +5,8 @@ export default class SearchArea extends Component {
     return (
       <div>
         <input />
-        <button>Search Pokemon</button>
-        <button>Show Collection</button>
+        <button onClick={this.props.searchPokemon}>Search Pokemon</button>
+        <button onClick={this.props.showCollection}>Show Collection</button>
       </div>
     );
   }

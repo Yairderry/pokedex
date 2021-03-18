@@ -12,7 +12,11 @@ export default class Display extends Component {
       <div>
         <ul>{printProperties(this.props.pokemon)}</ul>
         <img />
-        {this.props.caught ? <button>Release</button> : <button>Catch</button>}
+        {this.props.caught ? (
+          <button onClick={this.props.toggleCatchRelease}>Release</button>
+        ) : (
+          <button onClick={this.props.toggleCatchRelease}>Catch</button>
+        )}
       </div>
     );
   }

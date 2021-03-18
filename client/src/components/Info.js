@@ -10,7 +10,11 @@ export default class Info extends Component {
       <div>
         <ul>
           {this.props.info.map((pokemon, i) => (
-            <Pokemon key={i} pokemon={pokemon} />
+            <Pokemon
+              key={i}
+              pokemon={pokemon}
+              searchPokemon={this.props.searchPokemon}
+            />
           ))}
         </ul>
       </div>
