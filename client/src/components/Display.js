@@ -10,7 +10,15 @@ export default class Display extends Component {
     return (
       <div>
         <ul>{printProperties(this.props.pokemon)}</ul>
-        <img src={this.props.pokemon.img} />
+        <img
+          src={(this.src = this.props.pokemon.img.front_default)}
+          onMouseOver={(e) =>
+            (e.currentTarget.src = this.props.pokemon.img.back_default)
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.src = this.props.pokemon.img.front_default)
+          }
+        />
         {this.props.pokemon.caught ? (
           <button>Release</button>
         ) : (

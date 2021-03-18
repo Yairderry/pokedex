@@ -20,9 +20,10 @@ function App() {
     info: [],
   });
 
-  function toggleCatchRelease() {
+  function search(e) {
+    const input = e.target.value;
     setState({
-      input: state.input,
+      input,
       pokemon: state.pokemon,
       info: state.info,
     });
@@ -43,16 +44,14 @@ function App() {
   }
 
   function searchPokemon() {
-    const pokemon = {
-      Name: "yair",
-      Height: "1234",
-      Weight: "12341234",
-      Types: ["asdf", "qwer", "zxcv"],
-    };
-    setState({
-      input: state.input,
-      pokemon,
-      info: state.info,
+    const name = state.input;
+    axios.get(`/api/pokemon/${name}`).then((data) => {
+      const pokemon = data.data;
+      setState({
+        input: state.input,
+        pokemon,
+        info: state.info,
+      });
     });
   }
   return (
@@ -60,6 +59,7 @@ function App() {
       <h1>Pokedex</h1>
       <SearchArea
         input={state.input}
+        search={search}
         showCollection={showCollection}
         searchPokemon={searchPokemon}
       />
