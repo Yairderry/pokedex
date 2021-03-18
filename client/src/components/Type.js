@@ -1,20 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class Type extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <li>
-        {this.props.prop}:
-        {this.props.type.map((type, i) => (
-          <span onClick={(e) => this.props.getTypesList(e)} key={i}>
-            {type}
-          </span>
-        ))}
-      </li>
-    );
-  }
+export default function Type({ getTypesList, prop, type }) {
+  return (
+    <li>
+      {prop}:
+      {type.map((type, i) => (
+        <span onClick={(e) => getTypesList(e)} key={i}>
+          {type}
+        </span>
+      ))}
+    </li>
+  );
 }

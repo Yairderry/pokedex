@@ -1,28 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import Type from "./Type";
 
-class PokemonProperty extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <>
-        {this.props.prop === "types" ? (
-          <Type
-            getTypesList={this.props.getTypesList}
-            prop={this.props.prop}
-            type={this.props.value}
-          />
-        ) : (
-          <li>
-            {this.props.prop}: {this.props.value}
-          </li>
-        )}
-      </>
-    );
-  }
+export default function PokemonProperty({ prop, value, getTypesList }) {
+  return (
+    <>
+      {prop === "types" ? (
+        <Type getTypesList={getTypesList} prop={prop} type={value} />
+      ) : (
+        <li>
+          {prop}: {value}
+        </li>
+      )}
+    </>
+  );
 }
-
-export default PokemonProperty;

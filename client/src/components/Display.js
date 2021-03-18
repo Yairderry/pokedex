@@ -1,12 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import PokemonProperty from "./PokemonProperty";
 
-export default class Display extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  printProperties(pokemon) {
+export default function Display({ getTypesList, pokemon, toggleCatchRelease }) {
+  function printProperties(pokemon) {
     const PropertiesList = [];
     for (let prop in pokemon) {
       if (prop === "caught" || prop === "img") continue;
@@ -15,32 +11,26 @@ export default class Display extends Component {
           key={prop}
           prop={prop}
           value={pokemon[prop]}
-          getTypesList={this.props.getTypesList}
+          getTypesList={getTypesList}
         />
       );
     }
     return PropertiesList;
   }
 
-  render() {
-    return (
-      <div>
-        <ul>{this.printProperties(this.props.pokemon)}</ul>
-        <img
-          src={(this.src = this.props.pokemon.img.front_default)}
-          onMouseOver={(e) =>
-            (e.currentTarget.src = this.props.pokemon.img.back_default)
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.src = this.props.pokemon.img.front_default)
-          }
-        />
-        {!this.props.pokemon.name ? null : this.props.pokemon.caught ? (
-          <button onClick={this.props.toggleCatchRelease}>Release</button>
-        ) : (
-          <button onClick={this.props.toggleCatchRelease}>Catch</button>
-        )}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <ul>{printProperties(pokemon)}</ul>
+      <img
+        src={pokemon.img.front_default}
+        onMouseOver={(e) => (e.currentTarget.src = pokemon.img.back_default)}
+        onMouseOut={(e) => (e.currentTarget.src = pokemon.img.front_default)}
+      />
+      {!pokemon.name ? null : pokemon.caught ? (
+        <button onClick={toggleCatchRelease}>Release</button>
+      ) : (
+        <button onClick={toggleCatchRelease}>Catch</button>
+      )}
+    </div>
+  );
 }

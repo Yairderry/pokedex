@@ -118,6 +118,7 @@ function App() {
 
   function searchPokemon() {
     const name = state.input.toLowerCase();
+
     if (name === "") return;
 
     axios
@@ -158,7 +159,6 @@ function App() {
     <>
       <h1>Pokedex</h1>
       <SearchArea
-        input={state.input}
         search={search}
         showCollection={showCollection}
         searchPokemon={searchPokemon}
@@ -170,7 +170,6 @@ function App() {
       )}
       <Display
         toggleCatchRelease={toggleCatchRelease}
-        caught={state.caught}
         pokemon={state.pokemon}
         getTypesList={getTypesList}
       />
