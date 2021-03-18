@@ -10,8 +10,8 @@ type.get("/", (req, res) => {
 type.get("/:type", (req, res) => {
   getPokemon(req.originalUrl)
     .then((data) => {
-      console.log(data.pokemon);
       const pokemons = data.pokemon.map((pokemon) => pokemon.pokemon.name);
+      console.log(pokemons);
       res.json(pokemons);
     })
     .catch((err) => res.json({ err: err.message }));

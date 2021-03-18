@@ -9,8 +9,12 @@ class PokemonProperty extends Component {
   render() {
     return (
       <>
-        {this.props.prop === "Types" ? (
-          <Type prop={this.props.prop} type={this.props.value} />
+        {this.props.prop === "types" ? (
+          <Type
+            getTypesList={this.props.getTypesList}
+            prop={this.props.prop}
+            type={this.props.value}
+          />
         ) : (
           <li>
             {this.props.prop}: {this.props.value}

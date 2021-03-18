@@ -29,11 +29,58 @@ function App() {
     });
   }
 
+  function releasePokemon() {
+    axios
+      .delete(`/api/collection/release/${state.pokemon.name}`)
+      .then((data) => {
+        const info = data.data.userCollection;
+        state.pokemon.caught = !state.pokemon.caught;
+
+        setState({
+          input: state.input,
+          pokemon: state.pokemon,
+          info,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function catchPokemon() {
+    axios
+      .post(`/api/collection/catch`, { name: state.pokemon.name })
+      .then((data) => {
+        const info = data.data.userCollection;
+        state.pokemon.caught = !state.pokemon.caught;
+
+        setState({
+          input: state.input,
+          pokemon: state.pokemon,
+          info,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
   function showCollection() {
     axios
       .get(`/api/collection`)
       .then((data) => {
         const info = data.data.userCollection;
+        setState({
+          input: state.input,
+          pokemon: state.pokemon,
+          info,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function getTypesList(e) {
+    const type = e.target.innerText;
+    axios
+      .get(`/api/type/${type}`)
+      .then((data) => {
+        const info = data.data;
         setState({
           input: state.input,
           pokemon: state.pokemon,
@@ -54,6 +101,19 @@ function App() {
       });
     });
   }
+
+  function showPokemon(e) {
+    const name = e.target.innerText;
+    axios.get(`/api/pokemon/${name}`).then((data) => {
+      const pokemon = data.data;
+      setState({
+        input: state.input,
+        pokemon,
+        info: state.info,
+      });
+    });
+  }
+
   return (
     <>
       <h1>Pokedex</h1>
@@ -63,9 +123,15 @@ function App() {
         showCollection={showCollection}
         searchPokemon={searchPokemon}
       />
-      <Display caught={state.caught} pokemon={state.pokemon} />
+      <Display
+        catch={catchPokemon}
+        caught={state.caught}
+        release={releasePokemon}
+        pokemon={state.pokemon}
+        getTypesList={getTypesList}
+      />
       {state.info.length !== 0 && (
-        <Info info={state.info} searchPokemon={searchPokemon} />
+        <Info info={state.info} showPokemon={showPokemon} />
       )}
     </>
   );

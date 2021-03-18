@@ -17,7 +17,7 @@ collection.post("/catch", (req, res) => {
       .json({ error: "Pokemon already in your collection" });
 
   userCollection.push(pokemon);
-  return res.json({ message: "Pokemon caught!" });
+  return res.json({ userCollection });
 });
 
 collection.delete("/release/:name", (req, res) => {
@@ -29,6 +29,7 @@ collection.delete("/release/:name", (req, res) => {
       .json({ error: "This pokemon is not in your collection" });
 
   userCollection.splice(userCollection.indexOf(name), 1);
-  return res.json({ message: "Pokemon released!" });
+  return res.json({ userCollection });
 });
+
 module.exports = collection;

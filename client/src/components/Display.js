@@ -6,10 +6,26 @@ export default class Display extends Component {
     super(props);
   }
 
+  printProperties(pokemon) {
+    const PropertiesList = [];
+    for (let prop in pokemon) {
+      if (prop === "caught" || prop === "img") continue;
+      PropertiesList.push(
+        <PokemonProperty
+          key={prop}
+          prop={prop}
+          value={pokemon[prop]}
+          getTypesList={this.props.getTypesList}
+        />
+      );
+    }
+    return PropertiesList;
+  }
+
   render() {
     return (
       <div>
-        <ul>{printProperties(this.props.pokemon)}</ul>
+        <ul>{this.printProperties(this.props.pokemon)}</ul>
         <img
           src={(this.src = this.props.pokemon.img.front_default)}
           onMouseOver={(e) =>
@@ -20,22 +36,27 @@ export default class Display extends Component {
           }
         />
         {this.props.pokemon.caught ? (
-          <button>Release</button>
+          <button onClick={this.props.release}>Release</button>
         ) : (
-          <button>Catch</button>
+          <button onClick={this.props.catch}>Catch</button>
         )}
       </div>
     );
   }
 }
 
-function printProperties(pokemon) {
-  const PropertiesList = [];
-  for (let prop in pokemon) {
-    if (prop === "caught" || prop === "img") continue;
-    PropertiesList.push(
-      <PokemonProperty key={prop} prop={prop} value={pokemon[prop]} />
-    );
-  }
-  return PropertiesList;
-}
+// function printProperties(pokemon) {
+//   const PropertiesList = [];
+//   for (let prop in pokemon) {
+//     if (prop === "caught" || prop === "img") continue;
+//     PropertiesList.push(
+//       <PokemonProperty
+//         key={prop}
+//         prop={prop}
+//         value={pokemon[prop]}
+//         getTypesList={this.props.getTypesList}
+//       />
+//     );
+//   }
+//   return PropertiesList;
+// }

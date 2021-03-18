@@ -13,7 +13,7 @@ export default class Info extends Component {
             <Pokemon
               key={i}
               pokemon={pokemon}
-              searchPokemon={this.props.searchPokemon}
+              showPokemon={this.props.showPokemon}
             />
           ))}
         </ul>

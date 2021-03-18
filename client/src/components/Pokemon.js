@@ -8,7 +8,7 @@ class Pokemon extends Component {
   render() {
     return (
       <li>
-        <p onClick={this.props.searchPokemon}>{this.props.pokemon}</p>
+        <p onClick={(e) => this.props.showPokemon(e)}>{this.props.pokemon}</p>
       </li>
     );
   }
