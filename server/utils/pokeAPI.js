@@ -8,4 +8,12 @@ function getPokemon(fullRoute) {
   return axios.get(`${POKEAPI_BASE_URL}${route}`).then((result) => result.data);
 }
 
-module.exports = getPokemon;
+async function isPokemonCaught(name, req) {
+  const origin = `${req.protocol}://${req.hostname}:${
+    process.env.PORT || 3001
+  }`;
+  const { data } = await axios.get(`${origin}/api/collection`);
+  return data.results.find((pokemon) => pokemon.name === name) ? true : false;
+}
+
+module.exports = { getPokemon, isPokemonCaught };

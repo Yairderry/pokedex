@@ -4,7 +4,7 @@ import Pokemon from "./Pokemon";
 export default function Info({ info, showPokemon, showAnotherPage }) {
   return (
     <div>
-      {info.length !== 0 && (
+      {info.results.length !== 0 && (
         <>
           <button
             onClick={() => {

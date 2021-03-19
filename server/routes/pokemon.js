@@ -1,30 +1,36 @@
 const { default: axios } = require("axios");
 const { Router } = require("express");
 const express = require("express");
-const getPokemon = require("../utils/pokeAPI");
+const { getPokemon, isPokemonCaught } = require("../utils/pokeAPI");
 
 const pokemon = Router();
 
 pokemon.use(express.json());
 
-pokemon.get("/", (req, res) => {
-  getPokemon(req.originalUrl)
-    .then((data) => {
-      const results = data.results.map(({ name }) => ({
-        name,
-        img: null,
-        caught: null,
-      }));
-      const next = data.next ? data.next.slice(33) : null;
-      const prev = data.previous ? data.previous.slice(33) : null;
-      const info = {
-        next,
-        prev,
-        results,
-      };
-      res.json(info);
-    })
-    .catch((err) => res.json({ err: err.message }));
+pokemon.get("/", async (req, res) => {
+  try {
+    const { results, previous, next } = await getPokemon(req.originalUrl);
+    const newResults = await Promise.all(
+      results.map(async ({ name }) => {
+        const newPokemon = {
+          name,
+          img: null,
+          caught: await isPokemonCaught(name, req),
+        };
+        return newPokemon;
+      })
+    );
+    const newNext = next ? next.slice(33) : null;
+    const prev = previous ? previous.slice(33) : null;
+    const info = {
+      next: newNext,
+      prev,
+      results: newResults,
+    };
+    res.json(info);
+  } catch {
+    res.json({ err: err.message });
+  }
 });
 
 pokemon.get("/:name", async (req, res) => {
@@ -38,13 +44,7 @@ pokemon.get("/:name", async (req, res) => {
       front_default: sprites.front_default,
     };
 
-    const origin = `${req.protocol}://${req.hostname}:${
-      process.env.PORT || 3001
-    }`;
-    const { data } = await axios.get(`${origin}/api/collection`);
-    const caught = data.results.find((pokemon) => pokemon.name === name)
-      ? true
-      : false;
+    const caught = await isPokemonCaught(name, req);
 
     const pokemon = { name, height, weight, types: newTypes, img, caught };
     res.json(pokemon);
