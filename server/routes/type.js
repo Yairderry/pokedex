@@ -6,7 +6,11 @@ const type = Router();
 type.get("/:type", (req, res) => {
   getPokemon(req.originalUrl)
     .then((data) => {
-      const results = data.pokemon.map((pokemon) => pokemon.pokemon.name);
+      const results = data.pokemon.map(({ pokemon }) => ({
+        name: pokemon.name,
+        img: null,
+        caught: null,
+      }));
       res.json({ next: null, prev: null, results });
     })
     .catch((err) => {

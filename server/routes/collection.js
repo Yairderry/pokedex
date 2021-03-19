@@ -11,24 +11,24 @@ collection.get("/", (req, res) => {
 collection.post("/catch", (req, res) => {
   const { name } = req.body;
 
-  if (userCollection.includes(name))
+  if (userCollection.find((pokemon) => pokemon.name === name))
     return res
       .status(400)
       .json({ error: "Pokemon already in your collection" });
 
-  userCollection.push(name);
+  userCollection.push({ name, img: null, caught: true });
   return res.json({ next: null, prev: null, results: userCollection });
 });
 
 collection.delete("/release/:name", (req, res) => {
   const { name } = req.params;
 
-  if (!userCollection.includes(name))
+  if (!userCollection.find((pokemon) => pokemon.name === name))
     return res
       .status(404)
       .json({ error: "This pokemon is not in your collection" });
 
-  userCollection.splice(userCollection.indexOf(name), 1);
+  userCollection.filter((pokemon) => pokemon.name !== name);
   return res.json({ next: null, prev: null, results: userCollection });
 });
 

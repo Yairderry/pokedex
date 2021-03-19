@@ -10,7 +10,11 @@ pokemon.use(express.json());
 pokemon.get("/", (req, res) => {
   getPokemon(req.originalUrl)
     .then((data) => {
-      const results = data.results.map((aPokemon) => aPokemon.name);
+      const results = data.results.map(({ name }) => ({
+        name,
+        img: null,
+        caught: null,
+      }));
       const next = data.next ? data.next.slice(33) : null;
       const prev = data.previous ? data.previous.slice(33) : null;
       const info = {

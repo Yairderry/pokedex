@@ -82,6 +82,8 @@ function App() {
           pokemon: state.pokemon,
           info,
         });
+
+        getPokemonImages(info);
       })
       .catch(() => {
         setState({
@@ -128,6 +130,8 @@ function App() {
           pokemon: state.pokemon,
           info,
         });
+
+        getPokemonImages(info);
       })
       .catch(() => {
         setState({
@@ -137,6 +141,26 @@ function App() {
           info: state.info,
         });
       });
+  }
+
+  function getPokemonImages(info) {
+    info.results.map((pokemon) => {
+      axios
+        .get(`/api/pokemon/${pokemon.name}`)
+        .then(({ data }) => {
+          const { front_default } = data.img;
+          pokemon.img = front_default;
+          setState({
+            error: false,
+            input: state.input,
+            pokemon: state.pokemon,
+            info,
+          });
+        })
+        .catch(() => {
+          console.log("Some of the pokemon images couldn't load");
+        });
+    });
   }
 
   function getTypesList(e) {
@@ -151,6 +175,8 @@ function App() {
           pokemon: state.pokemon,
           info,
         });
+
+        getPokemonImages(info);
       })
       .catch(() => {
         setState({
