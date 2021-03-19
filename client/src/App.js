@@ -71,6 +71,52 @@ function App() {
     }
   }
 
+  function showEveryPokemon() {
+    axios
+      .get(`/api/pokemon`)
+      .then((data) => {
+        const info = data.data;
+        setState({
+          error: false,
+          input: state.input,
+          pokemon: state.pokemon,
+          info,
+        });
+      })
+      .catch(() => {
+        setState({
+          error: true,
+          input: state.input,
+          pokemon: state.pokemon,
+          info: state.info,
+        });
+      });
+  }
+
+  function showAnotherPage(nextOrPrev) {
+    if (!nextOrPrev) return;
+
+    axios
+      .get(`/api/pokemon/${nextOrPrev}`)
+      .then((data) => {
+        const info = data.data;
+        setState({
+          error: false,
+          input: state.input,
+          pokemon: state.pokemon,
+          info,
+        });
+      })
+      .catch(() => {
+        setState({
+          error: true,
+          input: state.input,
+          pokemon: state.pokemon,
+          info: state.info,
+        });
+      });
+  }
+
   function showCollection() {
     axios
       .get(`/api/collection`)
@@ -162,6 +208,7 @@ function App() {
         search={search}
         showCollection={showCollection}
         searchPokemon={searchPokemon}
+        showEveryPokemon={showEveryPokemon}
       />
       {state.error && (
         <div>
@@ -174,7 +221,11 @@ function App() {
         getTypesList={getTypesList}
       />
       {state.info.length !== 0 && (
-        <Info info={state.info} showPokemon={showPokemon} />
+        <Info
+          info={state.info}
+          showPokemon={showPokemon}
+          showAnotherPage={showAnotherPage}
+        />
       )}
     </>
   );

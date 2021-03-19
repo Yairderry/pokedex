@@ -11,8 +11,8 @@ pokemon.get("/", (req, res) => {
   getPokemon(req.originalUrl)
     .then((data) => {
       const results = data.results.map((aPokemon) => aPokemon.name);
-      const next = data.next ? data.next.slice(25) : null;
-      const prev = data.previous ? data.previous.slice(25) : null;
+      const next = data.next ? data.next.slice(33) : null;
+      const prev = data.previous ? data.previous.slice(33) : null;
       const info = {
         next,
         prev,
