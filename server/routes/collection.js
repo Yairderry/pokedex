@@ -9,14 +9,14 @@ collection.get("/", (req, res) => {
 });
 
 collection.post("/catch", (req, res) => {
-  const pokemon = req.body.name;
+  const { name } = req.body;
 
-  if (userCollection.includes(pokemon))
+  if (userCollection.includes(name))
     return res
       .status(400)
       .json({ error: "Pokemon already in your collection" });
 
-  userCollection.push(pokemon);
+  userCollection.push(name);
   return res.json({ next: null, prev: null, results: userCollection });
 });
 

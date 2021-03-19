@@ -210,16 +210,17 @@ function App() {
         searchPokemon={searchPokemon}
         showEveryPokemon={showEveryPokemon}
       />
-      {state.error && (
+      {state.error ? (
         <div>
           <img src="./sad_pikachu.gif" />
         </div>
+      ) : (
+        <Display
+          toggleCatchRelease={toggleCatchRelease}
+          pokemon={state.pokemon}
+          getTypesList={getTypesList}
+        />
       )}
-      <Display
-        toggleCatchRelease={toggleCatchRelease}
-        pokemon={state.pokemon}
-        getTypesList={getTypesList}
-      />
       {state.info.length !== 0 && (
         <Info
           info={state.info}

@@ -43,7 +43,6 @@ pokemon.get("/:name", async (req, res) => {
     const pokemon = { name, height, weight, types: newTypes, img, caught };
     res.json(pokemon);
   } catch (err) {
-    console.log(err);
     return res.status(404).json({ err: "There is no such pokemon!" });
   }
 });
