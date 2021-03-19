@@ -42,7 +42,9 @@ pokemon.get("/:name", async (req, res) => {
       process.env.PORT || 3001
     }`;
     const { data } = await axios.get(`${origin}/api/collection`);
-    const caught = data.results.includes(name);
+    const caught = data.results.find((pokemon) => pokemon.name === name)
+      ? true
+      : false;
 
     const pokemon = { name, height, weight, types: newTypes, img, caught };
     res.json(pokemon);
