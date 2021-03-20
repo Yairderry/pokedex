@@ -236,8 +236,9 @@ function App() {
     showEveryPokemon={showEveryPokemon}
    />
    {state.error ? (
-    <div>
-     <img src="./sad_pikachu.gif" />
+    <div className="error">
+     <img className="errorimg" src="./sad_pikachu.gif" />
+     <h2 className="pokemonerror">Pokemon Not Found</h2>
     </div>
    ) : (
     <Display

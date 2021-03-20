@@ -64,7 +64,10 @@
 
 .img {
  display: inline-flex;
- width: 200px;
+ max-width: 200px;
+ max-height: 200px;
+ min-width: 150px;
+ min-height: 150px;
  justify-content: center;
  align-self: center;
  flex-wrap: nowrap;
@@ -77,11 +80,46 @@
 }
 
 .infoDisplay {
- display: flex;
- flex-direction: row;
- flex-wrap: wrap-reverse;
+ max-width: 100vw;
+ max-height: 100vh;
 }
 
+.pokemonList {
+ display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ list-style-type: none;
+ padding: 8px 20px 8px 20px;
+ justify-content: center;
+}
+
+.pokemonLi {
+ background-color: #f1f1f1;
+ margin: 10px;
+ padding: 10px;
+ font-size: 20px;
+ justify-content: center;
+ width: 20%;
+}
+.error {
+ width: 100%;
+ height: 100vh;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+}
+
+.errorimg {
+ display: block;
+ margin-left: auto;
+ margin-right: auto;
+ width: 50%;
+}
+
+.pokemonerror {
+ font-size: 30px;
+}
 /* .App {
  text-align: center;
 }

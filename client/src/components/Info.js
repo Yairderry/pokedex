@@ -7,18 +7,20 @@ export default function Info({ info, showPokemon, showAnotherPage }) {
    {info.results.length !== 0 && (
     <>
      <button
+      className="btn"
       onClick={() => {
        showAnotherPage(info.prev);
       }}
      >
       prev page
      </button>
-     <ul>
+     <ul className="pokemonList">
       {info.results.map((pokemon, i) => (
        <Pokemon key={i} pokemon={pokemon} showPokemon={showPokemon} />
       ))}
      </ul>
      <button
+      className="btn"
       onClick={() => {
        showAnotherPage(info.next);
       }}
