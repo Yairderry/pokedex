@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const collection = Router();
 
-const userCollection = [];
+let userCollection = [];
 
 collection.get("/", (req, res) => {
   res.send({ next: null, prev: null, results: userCollection });
@@ -28,7 +28,7 @@ collection.delete("/release/:name", (req, res) => {
       .status(404)
       .json({ error: "This pokemon is not in your collection" });
 
-  userCollection.filter((pokemon) => pokemon.name !== name);
+  userCollection = userCollection.filter((pokemon) => pokemon.name !== name);
   return res.json({ next: null, prev: null, results: userCollection });
 });
 

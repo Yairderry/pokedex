@@ -35,7 +35,7 @@ pokemon.get("/", async (req, res) => {
 
 pokemon.get("/:name", async (req, res) => {
   try {
-    const { name, height, weight, types, sprites } = await getPokemon(
+    const { name, height, weight, types, sprites, id } = await getPokemon(
       req.originalUrl
     );
     const newTypes = types.map((type) => type.type.name);
@@ -46,15 +46,11 @@ pokemon.get("/:name", async (req, res) => {
 
     const caught = await isPokemonCaught(name, req);
 
-    const pokemon = { name, height, weight, types: newTypes, img, caught };
+    const pokemon = { id, name, height, weight, types: newTypes, img, caught };
     res.json(pokemon);
   } catch (err) {
     return res.status(404).json({ err: "There is no such pokemon!" });
   }
-});
-
-pokemon.get("/:id", (req, res) => {
-  res.send("Pokemon route");
 });
 
 module.exports = pokemon;
