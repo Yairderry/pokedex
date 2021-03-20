@@ -3,10 +3,10 @@ import PokemonProperty from "./PokemonProperty";
 
 export default function Display({ getTypesList, pokemon, toggleCatchRelease }) {
   function printProperties(pokemon) {
-    const PropertiesList = [];
+    const propertiesList = [];
     for (let prop in pokemon) {
       if (prop === "caught" || prop === "img") continue;
-      PropertiesList.push(
+      propertiesList.push(
         <PokemonProperty
           key={prop}
           prop={prop}
@@ -15,7 +15,7 @@ export default function Display({ getTypesList, pokemon, toggleCatchRelease }) {
         />
       );
     }
-    return PropertiesList;
+    return propertiesList;
   }
 
   return (

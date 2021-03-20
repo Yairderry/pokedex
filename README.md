@@ -1,31 +1,16 @@
-
-<h1>Pokedex Task <img src="https://veekun.com/dex/media/pokemon/global-link/7.png" height="50px"/></h1>
-
-In this task you will build your own pokédex!
+<h1>Pokedex</h1>
 
 The functionality will be similar to this [demo](https://murmuring-cove-95500.herokuapp.com/)
 
 ### Setup:
 
-Fork this boilerplate
-
-OR
-
-- Create a new repository
-- Create two different directories in you repository: `client` and `backend`.
-
-  - `client` will contain your React app
-  - `backend` will contain you express app
-
-  Init both as `npm` repositories (using `npm i -y`)
-
 ### Server Requirements:
 
-[pokeAPI](https://pokeapi.co/) is where you will fetch your data from. Use [this](https://pokeapi.co/docs/v2#pokemon-section) part of the documentation for help. 
+[pokeAPI](https://pokeapi.co/) is where you will fetch your data from. Use [this](https://pokeapi.co/docs/v2#pokemon-section) part of the documentation for help.
 
 In order to reduce data size and complexity and avoid CORS problems, you are going to build your own internal API.
 
-Your client will communicate with your API, which will communicate with the pokéAPI. You are required to modify the new response to your client. Match it to the provided example. 
+Your client will communicate with your API, which will communicate with the pokéAPI. You are required to modify the new response to your client. Match it to the provided example.
 
 **Required endpoints:**
 
