@@ -28,16 +28,16 @@ export default function Display({ getTypesList, pokemon, toggleCatchRelease }) {
      onMouseOver={(e) => (e.currentTarget.src = pokemon.img.back_default)}
      onMouseOut={(e) => (e.currentTarget.src = pokemon.img.front_default)}
     />
+    {!pokemon.name ? null : pokemon.caught ? (
+     <button className="btn" id="catchRelease" onClick={toggleCatchRelease}>
+      Release
+     </button>
+    ) : (
+     <button className="btn" id="catchRelease" onClick={toggleCatchRelease}>
+      Catch
+     </button>
+    )}
    </div>
-   {!pokemon.name ? null : pokemon.caught ? (
-    <button className="btn" id="catchRelease" onClick={toggleCatchRelease}>
-     Release
-    </button>
-   ) : (
-    <button className="btn" id="catchRelease" onClick={toggleCatchRelease}>
-     Catch
-    </button>
-   )}
   </>
  );
 }

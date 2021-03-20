@@ -11,10 +11,11 @@ function App() {
   error: false,
   input: "",
   pokemon: {
-   Name: "",
-   Height: "",
-   Weight: "",
-   Types: [],
+   id: "",
+   name: "",
+   height: "",
+   weight: "",
+   types: [],
    caught: false,
    img: "",
   },
@@ -238,7 +239,7 @@ function App() {
    {state.error ? (
     <div className="error">
      <img className="errorimg" src="./sad_pikachu.gif" />
-     <h2 className="pokemonerror">Pokemon Not Found</h2>
+     <h2>Pikachu not Found</h2>
     </div>
    ) : (
     <Display
