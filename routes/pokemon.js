@@ -34,23 +34,51 @@ pokemon.get("/", async (req, res) => {
 });
 
 pokemon.get("/:name", async (req, res) => {
-  try {
-    const { name, height, weight, types, sprites, id } = await getPokemon(
-      req.originalUrl
-    );
-    const newTypes = types.map((type) => type.type.name);
-    const img = {
-      back_default: sprites.back_default,
-      front_default: sprites.front_default,
-    };
+  getPokemon(req.originalUrl)
+    .then(({ name, height, weight, types, sprites, id }) => {
+      const newTypes = types.map((type) => type.type.name);
+      const img = {
+        back_default: sprites.back_default,
+        front_default: sprites.front_default,
+      };
 
-    const caught = await isPokemonCaught(name, req);
+      isPokemonCaught(name, req)
+        .then((caught) => {
+          const pokemon = {
+            id,
+            name,
+            height,
+            weight,
+            types: newTypes,
+            img,
+            caught,
+          };
+          return res.json(pokemon);
+        })
+        .catch((err) => {
+          return res.status(500).json({ err: "Oops! Something went wrong" });
+        });
+    })
+    .catch(() => {
+      return res.status(404).json({ err: "There is no such pokemon!" });
+    });
+  // try {
+  //   const { name, height, weight, types, sprites, id } = await getPokemon(
+  //     req.originalUrl
+  //   );
+  //   const newTypes = types.map((type) => type.type.name);
+  //   const img = {
+  //     back_default: sprites.back_default,
+  //     front_default: sprites.front_default,
+  //   };
 
-    const pokemon = { id, name, height, weight, types: newTypes, img, caught };
-    res.json(pokemon);
-  } catch (err) {
-    return res.status(404).json({ err: "There is no such pokemon!" });
-  }
+  //   const caught = await isPokemonCaught(name, req);
+
+  //   const pokemon = { id, name, height, weight, types: newTypes, img, caught };
+  //   res.json(pokemon);
+  // } catch (err) {
+  //   return res.status(404).json({ err: "There is no such pokemon!" });
+  // }
 });
 
 module.exports = pokemon;
