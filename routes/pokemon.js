@@ -33,9 +33,29 @@ pokemon.get("/", async (req, res) => {
 });
 
 pokemon.get("/:name", (req, res) => {
-  getPokemon(req.originalUrl).then((data) => {
-    res.json({ data });
-  });
+  getPokemon(req.originalUrl).then(
+    ({ name, height, weight, types, sprites, id }) => {
+      const newTypes = types.map((type) => type.type.name);
+      const img = {
+        back_default: sprites.back_default,
+        front_default: sprites.front_default,
+      };
+      res.json({ data });
+
+      isPokemonCaught(name, req).then((caught) => {
+        const pokemon = {
+          id,
+          name,
+          height,
+          weight,
+          types: newTypes,
+          img,
+          caught,
+        };
+        res.json(pokemon);
+      });
+    }
+  );
   // try {
   //   const { name, height, weight, types, sprites, id } = await getPokemon(
   //     req.originalUrl
