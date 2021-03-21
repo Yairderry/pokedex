@@ -34,6 +34,7 @@ pokemon.get("/", async (req, res) => {
 
 pokemon.get("/:name", async (req, res) => {
   try {
+    console.log("1");
     const { name, height, weight, types, sprites, id } = await getPokemon(
       req.originalUrl
     );
@@ -43,11 +44,13 @@ pokemon.get("/:name", async (req, res) => {
       front_default: sprites.front_default,
     };
 
+    console.log("2");
     const caught = await isPokemonCaught(name, req);
 
     const pokemon = { id, name, height, weight, types: newTypes, img, caught };
     res.json(pokemon);
   } catch (err) {
+    console.log(err);
     return res.status(404).json({ err: "There is no such pokemon!" });
   }
 });
