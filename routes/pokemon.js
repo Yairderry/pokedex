@@ -33,40 +33,8 @@ pokemon.get("/", async (req, res) => {
   }
 });
 
-pokemon.get("/:name", (req, res) => {
-  console.log("hi");
-  getPokemon(req.originalUrl)
-    .then(({ name, height, weight, types, sprites, id }) => {
-      console.log("i");
-      const newTypes = types.map((type) => type.type.name);
-      const img = {
-        back_default: sprites.back_default,
-        front_default: sprites.front_default,
-      };
-
-      isPokemonCaught(name, req)
-        .then((caught) => {
-          console.log("need");
-          const pokemon = {
-            id,
-            name,
-            height,
-            weight,
-            types: newTypes,
-            img,
-            caught,
-          };
-          return res.json(pokemon);
-        })
-        .catch((err) => {
-          console.log("to");
-          return res.status(500).json({ err: "Oops! Something went wrong" });
-        });
-    })
-    .catch(() => {
-      console.log("sleep");
-      return res.status(404).json({ err: "There is no such pokemon!" });
-    });
+pokemon.get("/:name", async (req, res) => {
+  res.send("why");
   // try {
   //   const { name, height, weight, types, sprites, id } = await getPokemon(
   //     req.originalUrl
