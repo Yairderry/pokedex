@@ -40,7 +40,6 @@ pokemon.get("/:name", (req, res) => {
         back_default: sprites.back_default,
         front_default: sprites.front_default,
       };
-      res.json({ data });
 
       isPokemonCaught(name, req).then((caught) => {
         const pokemon = {
