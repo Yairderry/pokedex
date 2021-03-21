@@ -33,7 +33,7 @@ pokemon.get("/", async (req, res) => {
   }
 });
 
-pokemon.get("/:name", async (req, res) => {
+pokemon.get("/:name", (req, res) => {
   getPokemon(req.originalUrl)
     .then(({ name, height, weight, types, sprites, id }) => {
       const newTypes = types.map((type) => type.type.name);
