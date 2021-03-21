@@ -1,6 +1,10 @@
 <h1>Pokedex</h1>
 
-this is a simple pokedex
+this is a simple pokedex!
+
+[link to the project in repl.it](https://pokedex.yairderry.repl.co/)
+
+[link to the project in heroku](https://pokedex-react-project.herokuapp.com/)
 
 **features:**
 

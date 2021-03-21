@@ -9,9 +9,7 @@ function getPokemon(fullRoute) {
 }
 
 async function isPokemonCaught(name, req) {
-  const origin = req.headers.referer;
-  console.log(origin);
-  const { data } = await axios.get(`${origin}api/collection`);
+  const { data } = await axios.get(`${req.headers.referer}api/collection`);
   return data.results.find((pokemon) => pokemon.name === name) ? true : false;
 }
 
