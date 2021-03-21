@@ -9,22 +9,17 @@ pokemon.use(express.json());
 
 pokemon.get("/", async (req, res) => {
   try {
-    console.log("1");
     const { results, previous, next } = await getPokemon(req.originalUrl);
-    console.log("2");
     const newResults = await Promise.all(
       results.map(async ({ name }) => {
-        console.log("2/1");
         const newPokemon = {
           name,
           img: null,
           caught: await isPokemonCaught(name, req),
         };
-        console.log("2/2");
         return newPokemon;
       })
     );
-    console.log("3");
     const newNext = next ? next.slice(33) : null;
     const prev = previous ? previous.slice(33) : null;
     const info = {
