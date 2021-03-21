@@ -1,4 +1,3 @@
-const { default: axios } = require("axios");
 const { Router } = require("express");
 const express = require("express");
 const { getPokemon, isPokemonCaught } = require("../utils/pokeAPI");
@@ -34,7 +33,9 @@ pokemon.get("/", async (req, res) => {
 });
 
 pokemon.get("/:name", (req, res) => {
-  res.json({ yair: req.body.name });
+  getPokemon(req.originalUrl).then((data) => {
+    res.json({ data });
+  });
   // try {
   //   const { name, height, weight, types, sprites, id } = await getPokemon(
   //     req.originalUrl
