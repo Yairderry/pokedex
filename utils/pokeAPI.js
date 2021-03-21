@@ -8,21 +8,12 @@ function getPokemon(fullRoute) {
   return axios.get(`${POKEAPI_BASE_URL}${route}`).then((result) => result.data);
 }
 
-// async function isPokemonCaught(name, req) {
-//   const origin = `${req.protocol}://${req.hostname}:${
-//     process.env.PORT || 3001
-//   }`;
-//   const { data } = await axios.get(`${origin}/api/collection`);
-//   return data.results.find((pokemon) => pokemon.name === name) ? true : false;
-// }
-
-function isPokemonCaught(name, req) {
+async function isPokemonCaught(name, req) {
   const origin = `${req.protocol}://${req.hostname}:${
     process.env.PORT || 3001
   }`;
-  return axios.get(`${origin}/api/collection`).then((data) => {
-    return data.results.find((pokemon) => pokemon.name === name) ? true : false;
-  });
+  const { data } = await axios.get(`${origin}/api/collection`);
+  return data.results.find((pokemon) => pokemon.name === name) ? true : false;
 }
 
 module.exports = { getPokemon, isPokemonCaught };
