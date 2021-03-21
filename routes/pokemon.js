@@ -33,8 +33,8 @@ pokemon.get("/", async (req, res) => {
   }
 });
 
-pokemon.get("/:name", async (req, res) => {
-  res.send("why");
+pokemon.get("/:name", (req, res) => {
+  res.json({ yair: req.body.name });
   // try {
   //   const { name, height, weight, types, sprites, id } = await getPokemon(
   //     req.originalUrl
