@@ -7,6 +7,22 @@ import { useState } from "react";
 const axios = require("axios").default;
 
 function App() {
+  const [error, setError] = useState(false);
+  const [input, setInput] = useState("");
+  const [pokemon, setPokemon] = useState({
+    id: "",
+    name: "",
+    height: "",
+    weight: "",
+    types: [],
+    caught: false,
+    img: "",
+  });
+  const [info, setInfo] = useState({
+    next: null,
+    prev: null,
+    results: [],
+  });
   const [state, setState] = useState({
     error: false,
     input: "",
@@ -22,46 +38,40 @@ function App() {
     info: { next: null, prev: null, results: [] },
   });
 
-  function search(e) {
-    const input = e.target.value;
-    setState({
-      error: false,
-      input,
-      pokemon: state.pokemon,
-      info: state.info,
-    });
-  }
-
   async function toggleCatchRelease() {
     try {
-      const collection = (await axios.get(`/api/collection`)).data
-        .userCollection;
+      const collection = await axios.get(`/api/collection`);
 
-      const data = state.pokemon.caught
-        ? await axios.delete(`/api/collection/release/${state.pokemon.name}`)
+      const data = pokemon.caught
+        ? await axios.delete(`/api/collection/release/${pokemon.name}`)
         : await axios.post(`/api/collection/catch`, {
-            name: state.pokemon.name,
+            name: pokemon.name,
           });
 
-      const info = data.data;
-      state.pokemon.caught = !state.pokemon.caught;
+      const newInfo = data.data;
+      pokemon.caught = !pokemon.caught;
 
-      if (JSON.stringify(state.info) === JSON.stringify(collection)) {
-        setState({
-          error: false,
-          input: state.input,
-          pokemon: state.pokemon,
-          info,
-        });
+      if (checkIfInfoIsCollection(info, collection.data)) {
+        setInfo(newInfo);
+        getPokemonImages(newInfo);
         return;
       }
 
-      setState({
-        error: false,
-        input: state.input,
-        pokemon: state.pokemon,
-        info: state.info,
+      const updatedResults = info.results.map((aPokemon) => {
+        if (aPokemon.name === pokemon.name) aPokemon.caught = pokemon.caught;
+        return aPokemon;
       });
+
+      setInfo(
+        JSON.parse(
+          JSON.stringify({
+            next: info.next,
+            prev: info.prev,
+            results: updatedResults,
+          })
+        )
+      );
+      setPokemon(JSON.parse(JSON.stringify(pokemon)));
     } catch {
       setState({
         error: true,
@@ -77,13 +87,7 @@ function App() {
       .get(`/api/pokemon`)
       .then((data) => {
         const info = data.data;
-        setState({
-          error: false,
-          input: state.input,
-          pokemon: state.pokemon,
-          info,
-        });
-
+        setInfo(info);
         getPokemonImages(info);
       })
       .catch(() => {
@@ -103,13 +107,7 @@ function App() {
       .get(`/api/pokemon/${nextOrPrev}`)
       .then((data) => {
         const info = data.data;
-        setState({
-          error: false,
-          input: state.input,
-          pokemon: state.pokemon,
-          info,
-        });
-
+        setInfo(info);
         getPokemonImages(info);
       })
       .catch(() => {
@@ -127,13 +125,7 @@ function App() {
       .get(`/api/collection`)
       .then((data) => {
         const info = data.data;
-        setState({
-          error: false,
-          input: state.input,
-          pokemon: state.pokemon,
-          info,
-        });
-
+        setInfo(info);
         getPokemonImages(info);
       })
       .catch(() => {
@@ -153,12 +145,12 @@ function App() {
         .then(({ data }) => {
           const { front_default } = data.img;
           pokemon.img = front_default;
-          setState({
-            error: false,
-            input: state.input,
-            pokemon: state.pokemon,
-            info,
-          });
+          const newInfo = {
+            next: info.next,
+            prev: info.prev,
+            results: info.results,
+          };
+          setInfo(newInfo);
         })
         .catch(() => {
           console.log("Some of the pokemon images couldn't load");
@@ -172,13 +164,7 @@ function App() {
       .get(`/api/type/${type}`)
       .then((data) => {
         const info = data.data;
-        setState({
-          error: false,
-          input: state.input,
-          pokemon: state.pokemon,
-          info,
-        });
-
+        setInfo(info);
         getPokemonImages(info);
       })
       .catch(() => {
@@ -192,7 +178,7 @@ function App() {
   }
 
   function searchPokemon() {
-    const name = state.input.toLowerCase();
+    const name = input.toLowerCase();
 
     if (name === "") return;
 
@@ -200,12 +186,7 @@ function App() {
       .get(`/api/pokemon/${name}`)
       .then((data) => {
         const pokemon = data.data;
-        setState({
-          error: false,
-          input: state.input,
-          pokemon,
-          info: state.info,
-        });
+        setPokemon(pokemon);
       })
       .catch(() => {
         setState({
@@ -221,12 +202,7 @@ function App() {
     const name = e.target.innerText;
     axios.get(`/api/pokemon/${name}`).then((data) => {
       const pokemon = data.data;
-      setState({
-        error: false,
-        input: state.input,
-        pokemon,
-        info: state.info,
-      });
+      setPokemon(pokemon);
     });
   }
 
@@ -234,7 +210,9 @@ function App() {
     <>
       <h1 className="header">Pokedex</h1>
       <SearchArea
-        search={search}
+        search={(e) => {
+          setInput(e.target.value);
+        }}
         showCollection={showCollection}
         searchPokemon={searchPokemon}
         showEveryPokemon={showEveryPokemon}
@@ -247,19 +225,28 @@ function App() {
       ) : (
         <Display
           toggleCatchRelease={toggleCatchRelease}
-          pokemon={state.pokemon}
+          pokemon={pokemon}
           getTypesList={getTypesList}
         />
       )}
       {state.info.length !== 0 && (
         <Info
-          info={state.info}
+          info={info}
           showPokemon={showPokemon}
           showAnotherPage={showAnotherPage}
         />
       )}
     </>
   );
+}
+
+// helper function
+function checkIfInfoIsCollection(info, collection) {
+  const infoNames = info.results.map((pokemon) => pokemon.name);
+  const collectionNames = collection.results.map((pokemon) => pokemon.name);
+  if (JSON.stringify(infoNames) === JSON.stringify(collectionNames))
+    return true;
+  return false;
 }
 
 export default App;
