@@ -14,3 +14,4 @@ this is a simple pokedex!
 - you can view your collection
 - you can view every possible pokemon in the pokemon world and see which ones you do have
 - there's a pagination when viewing the list of every pokemon because the list is too big
+- the pokedex reads the stats of the pokemon in a robotic voice

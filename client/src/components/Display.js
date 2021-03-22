@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PokemonProperty from "./PokemonProperty";
 
 export default function Display({ getTypesList, pokemon, toggleCatchRelease }) {
@@ -17,6 +17,19 @@ export default function Display({ getTypesList, pokemon, toggleCatchRelease }) {
     }
     return propertiesList;
   }
+
+  useEffect(() => {
+    if (pokemon.name !== "") {
+      const text = `name: ${pokemon.name}, height: ${pokemon.height}, weight: ${
+        pokemon.weight
+      }, types: ${pokemon.types.join(", ")}`;
+      const utter = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utter);
+    }
+    return () => {
+      speechSynthesis.cancel();
+    };
+  }, [pokemon.name]);
 
   return (
     <>

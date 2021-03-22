@@ -9,7 +9,7 @@ const axios = require("axios").default;
 function App() {
   const [error, setError] = useState(false);
   const [input, setInput] = useState("");
-  const [pokemon, setPokemon] = useState({
+  const initialPokemonValue = {
     id: "",
     name: "",
     height: "",
@@ -17,7 +17,8 @@ function App() {
     types: [],
     caught: false,
     img: "",
-  });
+  };
+  const [pokemon, setPokemon] = useState(initialPokemonValue);
   const [info, setInfo] = useState({
     next: null,
     prev: null,
@@ -74,6 +75,7 @@ function App() {
       })
       .catch(() => {
         setError(true);
+        setPokemon(initialPokemonValue);
       });
   }
 
@@ -90,6 +92,7 @@ function App() {
       })
       .catch(() => {
         setError(true);
+        setPokemon(initialPokemonValue);
       });
   }
 
@@ -104,6 +107,7 @@ function App() {
       })
       .catch(() => {
         setError(true);
+        setPokemon(initialPokemonValue);
       });
   }
 
@@ -139,6 +143,7 @@ function App() {
       })
       .catch(() => {
         setError(true);
+        setPokemon(initialPokemonValue);
       });
   }
 
@@ -156,6 +161,7 @@ function App() {
       })
       .catch(() => {
         setError(true);
+        setPokemon(initialPokemonValue);
       });
   }
 
