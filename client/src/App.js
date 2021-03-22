@@ -23,20 +23,6 @@ function App() {
     prev: null,
     results: [],
   });
-  const [state, setState] = useState({
-    error: false,
-    input: "",
-    pokemon: {
-      id: "",
-      name: "",
-      height: "",
-      weight: "",
-      types: [],
-      caught: false,
-      img: "",
-    },
-    info: { next: null, prev: null, results: [] },
-  });
 
   async function toggleCatchRelease() {
     try {
@@ -73,12 +59,7 @@ function App() {
       );
       setPokemon(JSON.parse(JSON.stringify(pokemon)));
     } catch {
-      setState({
-        error: true,
-        input: state.input,
-        pokemon: state.pokemon,
-        info: state.info,
-      });
+      setError(true);
     }
   }
 
@@ -87,16 +68,12 @@ function App() {
       .get(`/api/pokemon`)
       .then((data) => {
         const info = data.data;
+        setError(false);
         setInfo(info);
         getPokemonImages(info);
       })
       .catch(() => {
-        setState({
-          error: true,
-          input: state.input,
-          pokemon: state.pokemon,
-          info: state.info,
-        });
+        setError(true);
       });
   }
 
@@ -107,16 +84,12 @@ function App() {
       .get(`/api/pokemon/${nextOrPrev}`)
       .then((data) => {
         const info = data.data;
+        setError(false);
         setInfo(info);
         getPokemonImages(info);
       })
       .catch(() => {
-        setState({
-          error: true,
-          input: state.input,
-          pokemon: state.pokemon,
-          info: state.info,
-        });
+        setError(true);
       });
   }
 
@@ -125,21 +98,18 @@ function App() {
       .get(`/api/collection`)
       .then((data) => {
         const info = data.data;
+        setError(false);
         setInfo(info);
         getPokemonImages(info);
       })
       .catch(() => {
-        setState({
-          error: true,
-          input: state.input,
-          pokemon: state.pokemon,
-          info: state.info,
-        });
+        setError(true);
       });
   }
 
   function getPokemonImages(info) {
     info.results.map((pokemon) => {
+      if (pokemon.name === "Your collection is empty") return;
       axios
         .get(`/api/pokemon/${pokemon.name}`)
         .then(({ data }) => {
@@ -168,12 +138,7 @@ function App() {
         getPokemonImages(info);
       })
       .catch(() => {
-        setState({
-          error: true,
-          input: state.input,
-          pokemon: state.pokemon,
-          info: state.info,
-        });
+        setError(true);
       });
   }
 
@@ -186,15 +151,11 @@ function App() {
       .get(`/api/pokemon/${name}`)
       .then((data) => {
         const pokemon = data.data;
+        setError(false);
         setPokemon(pokemon);
       })
       .catch(() => {
-        setState({
-          error: true,
-          input: state.input,
-          pokemon: state.pokemon,
-          info: state.info,
-        });
+        setError(true);
       });
   }
 
@@ -202,6 +163,7 @@ function App() {
     const name = e.target.innerText;
     axios.get(`/api/pokemon/${name}`).then((data) => {
       const pokemon = data.data;
+      setError(false);
       setPokemon(pokemon);
     });
   }
@@ -217,7 +179,7 @@ function App() {
         searchPokemon={searchPokemon}
         showEveryPokemon={showEveryPokemon}
       />
-      {state.error ? (
+      {error ? (
         <div className="error">
           <img className="errorimg" src="./sad_pikachu.gif" />
           <h2>Pikachu not Found</h2>
@@ -229,7 +191,7 @@ function App() {
           getTypesList={getTypesList}
         />
       )}
-      {state.info.length !== 0 && (
+      {info.length !== 0 && (
         <Info
           info={info}
           showPokemon={showPokemon}

@@ -2,7 +2,9 @@ const { Router } = require("express");
 
 const collection = Router();
 
-let userCollection = [{ name: "My Collection", img: null, caught: false }];
+let userCollection = [
+  { name: "Your collection is empty", img: null, caught: false },
+];
 
 collection.get("/", (req, res) => {
   res.send({ next: null, prev: null, results: userCollection });
@@ -16,7 +18,8 @@ collection.post("/catch", (req, res) => {
       .status(400)
       .json({ error: "Pokemon already in your collection" });
 
-  if (userCollection[0].name === "My Collection") userCollection.length = 0;
+  if (userCollection[0].name === "Your collection is empty")
+    userCollection.length = 0;
   userCollection.push({ name, img: null, caught: true });
   return res.json({ next: null, prev: null, results: userCollection });
 });
