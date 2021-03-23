@@ -1,0 +1,12 @@
+{
+  "env": {
+    "commonjs": true,
+    "es2020": true,
+    "node": true
+  },
+  "extends": ["airbnb-base"],
+  "rules": {
+    "linebreak-style": ["off", "windows"],
+    "func-names": "off"
+  }
+}
